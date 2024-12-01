@@ -48,49 +48,47 @@ namespace LeetCodeSolutions.Problems
     {
         public static bool Solution(string s)
         {
-            bool result=true;
-            var firstChar=s[0].ToString();
-            string debugString="";
-            //List<string> validValues= new List<string>{"(","[","{"};
-            //I don't think i need a List for this, since a string is already an array of chars and it's also dynamic
-            string validValues="([{";
-
-            //Map the chars that every symbol REMOVES from the list of validChars, this way i can still keep track 
-            //of the already open brackets
-            Dictionary<string,string[]> negativeValues = new Dictionary<string, string[]>
+           
+            bool result = true;
+            var parentesiChiusa = new List<char>(); // Usare una lista per facilità di gestione
+            string validValues = "([{";
+            Dictionary<char, char> matchingBrackets = new Dictionary<char, char>
             {
-                { "(", [")}]",")"]},
-                { "[", [")]}","]"] },
-                { "{", [")]}","}"] },
-                { ")", ["",""]},
-                { "]", ["",""]},
-                { "}", ["",""]}
+                { ')', '(' },
+                { ']', '[' },
+                { '}', '{' }
             };
-            //Check if first char is a closed bracket, if it is, return false
-            if(validValues.Contains(firstChar)==false)
-            {
-                result=false;
-            }
 
-            else
+            for (int i = 0; i < s.Length; i++)
             {
-                for(int i=0;i<s.Length;i++)
+                char currentChar = s[i];
+
+                // Se è una parentesi aperta, aggiungila alla lista delle parentesi aperte
+                if (validValues.Contains(currentChar))
                 {
-                    debugString=s[i].ToString();
-                    if(validValues.Contains(s[i].ToString())==true)
+                    parentesiChiusa.Add(currentChar);
+                }
+                // Se è una parentesi chiusa
+                else if (matchingBrackets.ContainsKey(currentChar))
+                {
+                    // Controlla se corrisponde all'ultima parentesi aperta
+                    if (parentesiChiusa.Count == 0 || parentesiChiusa[^1] != matchingBrackets[currentChar])
                     {
-                        foreach (var c in negativeValues[(s[i].ToString())][0])
-                        {
-                            validValues = validValues.Replace(c, ' ');
-                            
-                        }
-                        validValues += negativeValues[(s[i].ToString())][1];
+                        return false;
                     }
-                    else return false;
+                    // Rimuovi l'ultima parentesi aperta
+                    parentesiChiusa.RemoveAt(parentesiChiusa.Count - 1);
+                }
+                else
+                {
+                    // Carattere non valido
+                    return false;
                 }
             }
-            
-            return result;
-        }
+
+            // Se alla fine ci sono ancora parentesi aperte non chiuse, la stringa non è valida
+            return parentesiChiusa.Count == 0;
+    }
+        
     }
 }
