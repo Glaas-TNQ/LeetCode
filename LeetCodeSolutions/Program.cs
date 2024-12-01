@@ -7,7 +7,7 @@ namespace LeetCodeSolutions
     {
         static void Main(string[] args)
         {
-            string s = "()[]{}";
+            string s = "([])";
             bool solution = false;
 
             // Chiama il metodo Solution (modifica il nome della classe se necessario)

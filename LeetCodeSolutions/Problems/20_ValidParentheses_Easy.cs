@@ -48,8 +48,49 @@ namespace LeetCodeSolutions.Problems
     {
         public static bool Solution(string s)
         {
-            // Implementa qui la tua logica
-            return true;
+            bool result=true;
+            var firstChar=s[0].ToString();
+            string debugString="";
+            //List<string> validValues= new List<string>{"(","[","{"};
+            //I don't think i need a List for this, since a string is already an array of chars and it's also dynamic
+            string validValues="([{";
+
+            //Map the chars that every symbol REMOVES from the list of validChars, this way i can still keep track 
+            //of the already open brackets
+            Dictionary<string,string[]> negativeValues = new Dictionary<string, string[]>
+            {
+                { "(", [")}]",")"]},
+                { "[", [")]}","]"] },
+                { "{", [")]}","}"] },
+                { ")", ["",""]},
+                { "]", ["",""]},
+                { "}", ["",""]}
+            };
+            //Check if first char is a closed bracket, if it is, return false
+            if(validValues.Contains(firstChar)==false)
+            {
+                result=false;
+            }
+
+            else
+            {
+                for(int i=0;i<s.Length;i++)
+                {
+                    debugString=s[i].ToString();
+                    if(validValues.Contains(s[i].ToString())==true)
+                    {
+                        foreach (var c in negativeValues[(s[i].ToString())][0])
+                        {
+                            validValues = validValues.Replace(c, ' ');
+                            
+                        }
+                        validValues += negativeValues[(s[i].ToString())][1];
+                    }
+                    else return false;
+                }
+            }
+            
+            return result;
         }
     }
 }
