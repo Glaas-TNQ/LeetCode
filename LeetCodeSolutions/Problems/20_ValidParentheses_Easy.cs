@@ -49,7 +49,6 @@ namespace LeetCodeSolutions.Problems
         public static bool Solution(string s)
         {
            
-            bool result = true;
             var parentesiChiusa = new List<char>(); // Usare una lista per facilità di gestione
             string validValues = "([{";
             Dictionary<char, char> matchingBrackets = new Dictionary<char, char>
